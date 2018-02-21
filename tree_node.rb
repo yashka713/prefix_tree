@@ -1,4 +1,4 @@
-class TrieNode
+class TreeNode
   attr_accessor :char, :children, :leaf
 
   def initialize(char)

@@ -1,7 +1,7 @@
-load 'trie_node.rb'
-class Trie
+load 'tree_node.rb'
+class Tree
   def initialize
     @list = []
-    @node = TrieNode.new('')
+    @node = TreeNode.new('')
   end
 end
