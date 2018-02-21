@@ -6,18 +6,15 @@ menu = [
   '3. Show list of words from Tree.', '4. Exit.'
 ]
 
-trie = Trie.new
 loop do
   menu.each { |item| puts item }
   case gets.chomp
   when '1'
     puts 'Please, write the word(without whitespaces):'
-
   when '2'
     puts 'Please, write the word(without whitespaces):'
-
   when '3'
-    trie.list
+    puts 'List of words in tree:'
   when '4'
     puts 'Bye'
     break
