@@ -6,11 +6,13 @@ menu = [
   '3. Show list of words from Tree.', '4. Exit.'
 ]
 
+tree = Tree.new
 loop do
   menu.each { |item| puts item }
   case gets.chomp
   when '1'
     puts 'Please, write the word(without whitespaces):'
+    tree.add(gets.chomp)
   when '2'
     puts 'Please, write the word(without whitespaces):'
   when '3'
