@@ -8,9 +8,7 @@ class Tree
     word = word.delete('^a-zA-Z')
     letters = word.chars
     branch = @node
-    letters.each do |letter|
-      branch = branch.children.empty? ? create_sprout(branch, letter) : find_sprout(branch, letter)
-    end
+    letters.each { |letter| branch = find_or_create_sprout(branch, letter) }
     branch.leaf = true
     word
   end
@@ -23,7 +21,7 @@ class Tree
     sprout
   end
 
-  def find_sprout(branch, letter)
+  def find_or_create_sprout(branch, letter)
     branch.children.each { |node| return node if node.char == letter }
     create_sprout(branch, letter)
   end
