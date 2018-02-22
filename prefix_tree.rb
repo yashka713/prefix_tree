@@ -1,4 +1,5 @@
-load 'tree.rb'
+require_relative 'tree.rb'
+require_relative 'tree_node.rb'
 require 'byebug'
 
 menu = [
@@ -6,11 +7,13 @@ menu = [
   '3. Show list of words from Tree.', '4. Exit.'
 ]
 
+tree = Tree.new
 loop do
   menu.each { |item| puts item }
   case gets.chomp
   when '1'
     puts 'Please, write the word(without whitespaces):'
+    puts tree.add(gets.chomp)
   when '2'
     puts 'Please, write the word(without whitespaces):'
   when '3'
