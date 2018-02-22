@@ -13,7 +13,7 @@ loop do
   case gets.chomp
   when '1'
     puts 'Please, write the word(without whitespaces):'
-    tree.add(gets.chomp)
+    puts tree.add(gets.chomp)
   when '2'
     puts 'Please, write the word(without whitespaces):'
   when '3'
