@@ -1,4 +1,5 @@
-load 'tree.rb'
+require_relative 'tree.rb'
+require_relative 'tree_node.rb'
 require 'byebug'
 
 menu = [
