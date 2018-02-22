@@ -42,3 +42,23 @@ describe '#add' do
     assert_equal('qwerty', first_branch)
   end
 end
+
+describe '#includes?' do
+  let(:tree) do
+    tree = Tree.new
+    feel_tree(tree)
+  end
+  let(:first_branch) do
+    mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
+    find_my_first_branch(mother_node, '')
+  end
+
+  it 'find word' do
+    WORDS.each { |word| tree.includes?(word).must_equal true }
+    assert_equal('cat', first_branch)
+  end
+
+  it 'doesn\'t find word' do
+    %w[pop push fat group track].each { |word| tree.includes?(word).must_equal false }
+  end
+end
