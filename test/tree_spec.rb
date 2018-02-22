@@ -15,30 +15,30 @@ describe 'Tree' do
   end
 end
 
-describe 'Adding new word to Tree' do
+describe '#add' do
   let(:tree) { Tree.new }
   let(:first_branch) do
     mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
     find_my_first_branch(mother_node, '')
   end
 
-  it 'should add new word to Tree' do
-    assert_equal(tree.add('qwerty'), 'qwerty added to Tree')
+  it 'when letter string' do
+    assert_equal(tree.add('qwerty'), true)
     assert_equal('qwerty', first_branch)
   end
 
-  it 'should remove all digits and add new word to Tree' do
-    assert_equal(tree.add('213132qwe323212131rty1112131'), 'qwerty added to Tree')
+  it 'when digits present' do
+    assert_equal(tree.add('213132qwe323212131rty1112131'), true)
     assert_equal('qwerty', first_branch)
   end
 
-  it 'should remove all whitespaces and add new word to Tree' do
-    assert_equal(tree.add(' q w er t y '), 'qwerty added to Tree')
+  it 'when whitespaces present' do
+    assert_equal(tree.add(' q w er t y '), true)
     assert_equal('qwerty', first_branch)
   end
 
-  it 'should remove all special symbols and add new word to Tree' do
-    assert_equal(tree.add('/q*w-e+r[t}y&'), 'qwerty added to Tree')
+  it 'when special symbols present' do
+    assert_equal(tree.add('/q*w-e+r[t}y&'), true)
     assert_equal('qwerty', first_branch)
   end
 end
