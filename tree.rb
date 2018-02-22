@@ -5,18 +5,13 @@ class Tree
 
   def add(word)
     word = word.delete('^a-zA-Z')
-    return msg_for_empty_word if word.empty?
+    return 'Fill line with word, please' if word.empty?
     branch = @node
     word.chars.each { |letter| branch = find_or_create_sprout(branch, letter) }
     branch.leaf = true
-    "#{word} added to Tree"
   end
 
   private
-
-  def msg_for_empty_word
-    'Fill line with word, please'
-  end
 
   def find_or_create_sprout(branch, letter)
     find_sprout(branch, letter) || create_sprout(branch, letter)
