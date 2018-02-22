@@ -19,8 +19,7 @@ class Tree
   end
 
   def find_sprout(branch, letter)
-    branch.children.each { |node| return node if node.char == letter }
-    nil
+    branch.children.find { |node| node.char == letter }
   end
 
   def create_sprout(branch, letter)
