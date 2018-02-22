@@ -1,4 +1,5 @@
 require_relative 'tree_node.rb'
+
 class Tree
   def initialize
     @node = TreeNode.new('*')
