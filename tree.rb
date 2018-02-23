@@ -11,7 +11,27 @@ class Tree
     branch.leaf = true
   end
 
+  def list
+    return 'Tree is empty' if @node.children.empty?
+    tree = []
+    @node.children.each { |child| tree << find_branches(child, '', tree) }
+    tree.reject(&:empty?)
+  end
+
   private
+
+  def find_branches(node, str, tree)
+    if node.leaf
+      double_l = str + node.char
+      tree << double_l
+      # for word with double letter, for example 'letter'
+      node.children.each { |child_node| find_branches(child_node, double_l, tree) }
+    else
+      str << node.char
+      node.children.each { |child_node| find_branches(child_node, str, tree) }
+      str.chop!
+    end
+  end
 
   def find_or_create_sprout(branch, letter)
     find_sprout(branch, letter) || create_sprout(branch, letter)
