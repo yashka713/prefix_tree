@@ -13,32 +13,54 @@ describe 'Tree' do
     err = -> { Tree.new('qwerty') }.must_raise ArgumentError
     err.message.must_match 'wrong number of arguments'
   end
-end
 
-describe '#add' do
-  let(:tree) { Tree.new }
-  let(:first_branch) do
-    mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
-    find_my_first_branch(mother_node, '')
+  describe '#add' do
+    let(:tree) { Tree.new }
+    let(:first_branch) do
+      mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
+      find_first_word_in_tree(mother_node, '')
+    end
+
+    it 'when letter string' do
+      assert_equal(tree.add('qwerty'), true)
+      assert_equal('qwerty', first_branch)
+    end
+
+    it 'when digits present' do
+      assert_equal(tree.add('213132qwe323212131rty1112131'), true)
+      assert_equal('qwerty', first_branch)
+    end
+
+    it 'when whitespaces present' do
+      assert_equal(tree.add(' q w er t y '), true)
+      assert_equal('qwerty', first_branch)
+    end
+
+    it 'when special symbols present' do
+      assert_equal(tree.add('/q*w-e+r[t}y&'), true)
+      assert_equal('qwerty', first_branch)
+    end
   end
 
-  it 'when letter string' do
-    assert_equal(tree.add('qwerty'), true)
-    assert_equal('qwerty', first_branch)
-  end
+  describe '#includes?' do
+    let(:tree) do
+      tree = Tree.new
+      words.each { |word| tree.add(word)}
+      tree
+    end
+    let(:words) { %w[cat cop cup can call chat chart clap cost] }
+    let(:first_branch) do
+      mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
+      find_first_word_in_tree(mother_node, '')
+    end
 
-  it 'when digits present' do
-    assert_equal(tree.add('213132qwe323212131rty1112131'), true)
-    assert_equal('qwerty', first_branch)
-  end
+    it 'find word' do
+      words.each { |word| tree.includes?(word).must_equal true }
+      assert_equal('cat', first_branch)
+    end
 
-  it 'when whitespaces present' do
-    assert_equal(tree.add(' q w er t y '), true)
-    assert_equal('qwerty', first_branch)
-  end
-
-  it 'when special symbols present' do
-    assert_equal(tree.add('/q*w-e+r[t}y&'), true)
-    assert_equal('qwerty', first_branch)
+    it 'doesn\'t find word' do
+      %w[pop push fat group track].each { |word| tree.includes?(word).must_equal false }
+    end
   end
 end

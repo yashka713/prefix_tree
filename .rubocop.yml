@@ -15,5 +15,13 @@ Metrics/MethodLength:
   CountComments: false
   Max: 20
 
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*_spec.rb"
+
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"
+
 Style/FrozenStringLiteralComment:
   Enabled: false

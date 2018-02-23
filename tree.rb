@@ -1,3 +1,5 @@
+require_relative 'tree_node.rb'
+
 class Tree
   def initialize
     @node = TreeNode.new('*')
@@ -9,6 +11,11 @@ class Tree
     branch = @node
     word.chars.each { |letter| branch = find_or_create_sprout(branch, letter) }
     branch.leaf = true
+  end
+
+  def includes?(word)
+    branch = @node
+    word.delete('^a-zA-Z').chars.all? { |letter| branch = find_sprout(branch, letter) } && branch.leaf
   end
 
   private
