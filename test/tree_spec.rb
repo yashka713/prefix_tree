@@ -18,7 +18,7 @@ describe 'Tree' do
     let(:tree) { Tree.new }
     let(:first_branch) do
       mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
-      find_my_first_branch(mother_node, '')
+      find_first_word_in_tree(mother_node, '')
     end
 
     it 'when letter string' do
@@ -51,7 +51,7 @@ describe 'Tree' do
     let(:words) { %w[cat cop cup can call chat chart clap cost] }
     let(:first_branch) do
       mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
-      find_my_first_branch(mother_node, '')
+      find_first_word_in_tree(mother_node, '')
     end
 
     it 'find word' do
