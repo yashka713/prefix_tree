@@ -14,9 +14,8 @@ class Tree
   end
 
   def includes?(word)
-    word = word.delete('^a-zA-Z')
     branch = @node
-    word.chars.all? { |letter| branch = find_sprout(branch, letter) } && branch.leaf
+    word.delete('^a-zA-Z').chars.all? { |letter| branch = find_sprout(branch, letter) } && branch.leaf
   end
 
   private
