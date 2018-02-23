@@ -19,10 +19,7 @@ class Tree
   end
 
   def list
-    return 'Tree is empty' if @node.children.empty?
-    tree = []
-    @node.children.each { |child| tree << find_branches(child, '', tree) }
-    tree.reject(&:empty?)
+    @node.children.empty? ? 'Tree is empty' : fill_tree(@node, '', [])
   end
 
   private
@@ -32,12 +29,17 @@ class Tree
       double_l = str + node.char
       tree << double_l
       # for word with double letter, for example 'letter'
-      node.children.each { |child_node| find_branches(child_node, double_l, tree) }
+      fill_tree(node, double_l, tree)
     else
       str << node.char
-      node.children.each { |child_node| find_branches(child_node, str, tree) }
+      fill_tree(node, str, tree)
       str.chop!
     end
+  end
+
+  def fill_tree(node, str, tree)
+    node.children.each { |child_node| find_branches(child_node, str, tree) }
+    tree.reject(&:empty?)
   end
 
   def find_or_create_sprout(branch, letter)
