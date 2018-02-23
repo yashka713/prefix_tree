@@ -18,6 +18,7 @@ loop do
     puts 'Please, write the word(without whitespaces):'
   when '3'
     puts 'List of words in tree:'
+    puts tree.list
   when '4'
     puts 'Bye'
     break
