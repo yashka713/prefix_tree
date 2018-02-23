@@ -1,5 +1,4 @@
 require_relative 'tree.rb'
-require_relative 'tree_node.rb'
 require 'byebug'
 
 menu = [
@@ -9,6 +8,7 @@ menu = [
 
 tree = Tree.new
 loop do
+  print `clear`
   menu.each { |item| puts item }
   case gets.chomp
   when '1'
@@ -16,6 +16,7 @@ loop do
     puts tree.add(gets.chomp)
   when '2'
     puts 'Please, write the word(without whitespaces):'
+    puts tree.includes?(gets.chomp)
   when '3'
     puts 'List of words in tree:'
     puts tree.list
@@ -25,4 +26,5 @@ loop do
   else
     puts 'That\'s not menu item'
   end
+  sleep(1)
 end
