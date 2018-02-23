@@ -42,3 +42,27 @@ describe '#add' do
     assert_equal('qwerty', first_branch)
   end
 end
+
+describe '#list' do
+  let(:empty_tree) { Tree.new }
+  let(:full_tree) do
+    tree = Tree.new
+    words.each { |word| tree.add(word) }
+    tree
+  end
+  let(:words) { %w[let letter console content contract produce progress cot cop pain get set] }
+  let(:first_branch) do
+    mother_node = full_tree.instance_variable_get(:@node).instance_variable_get(:@children).first
+    find_my_first_branch(mother_node, '')
+  end
+
+  it 'when empty' do
+    empty_tree.list.must_match 'Tree is empty'
+  end
+
+  it 'when fulled' do
+    assert_equal(full_tree.list.size, words.size)
+    # full_tree.list.each { |word| full_tree.includes?(word).must_equal true }
+    assert_equal('let', first_branch)
+  end
+end
