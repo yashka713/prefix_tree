@@ -12,6 +12,7 @@ describe 'Tree' do
     mother_node = filled_tree.instance_variable_get(:@node).instance_variable_get(:@children).first
     find_first_word_in_tree(mother_node, '')
   end
+  let(:file_spec) { '/words_spec.txt' }
 
   it 'create Tree' do
     tree.must_be_instance_of Tree
@@ -77,8 +78,6 @@ describe 'Tree' do
   end
 
   describe '#save_to_file' do
-    let(:file_spec) { '/words_spec.txt' }
-
     it 'when list is empty' do
       assert_equal(true, tree.list.empty?)
       assert_equal(false, tree.save_to_file(file_spec))
@@ -93,7 +92,6 @@ describe 'Tree' do
   end
 
   describe '#load_from_file' do
-    let(:file_spec) { '/words_spec.txt' }
     let(:unexisted_file) { '/unexisted_words_spec.txt' }
     let(:file_empty_spec) do
       File.new(Tree::FILE_PATH + '/file_empty_spec.txt', 'w')

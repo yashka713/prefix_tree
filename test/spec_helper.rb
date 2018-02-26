@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require 'byebug'
-load 'tree_node.rb'
-load 'tree.rb'
+load 'lib/tree_node.rb'
+load 'lib/tree.rb'
 
 def find_first_word_in_tree(node, str)
   str << node.char
