@@ -19,25 +19,15 @@ class Tree
   end
 
   def list
-    @node.children.empty? ? 'Tree is empty' : list_v_1(@node, '', [])
-    # @node.children.empty? ? 'Tree is empty' : list_v_2
-  end
-
-  def list_v_2(current_node = @node, temp_str = '', words_arr = [])
-    temp_str += current_node.char unless current_node == @node
-    current_node.children.each do |child|
-      words_arr << temp_str + child.char if child.leaf
-      words_arr = list_v_2(child, temp_str, words_arr.clone)
-    end
-    words_arr
+    perform_list(@node, '', [])
   end
 
   private
 
-  def list_v_1(node, temp_str, tree)
+  def perform_list(node, temp_str, tree)
     temp_str += node.char unless node == @node
     tree << temp_str if node.leaf
-    node.children.each { |child_node| list_v_1(child_node, temp_str, tree) }
+    node.children.each { |child_node| perform_list(child_node, temp_str, tree) }
     tree
   end
 
