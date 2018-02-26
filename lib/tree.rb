@@ -21,7 +21,6 @@ class Tree
   end
 
   def list
-    # %w[cat cop cup can call chat chart clap cost let letter console content contract].each { |w| add(w) }
     perform_list(@node, '', [])
   end
 
