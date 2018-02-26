@@ -21,7 +21,7 @@ class Tree
   end
 
   def list
-    %w[cat cop cup can call chat chart clap cost let letter console content contract].each { |w| add(w) }
+    # %w[cat cop cup can call chat chart clap cost let letter console content contract].each { |w| add(w) }
     perform_list(@node, '', [])
   end
 
@@ -30,6 +30,15 @@ class Tree
 
     File.open(file_path(filename), 'w') { |f| list.each { |word| f.puts(word) } }
     true
+  rescue IOError
+    false
+  end
+
+  def load_from_file(filename = 'words.txt')
+    File.open(file_path(filename), 'r').each_line { |word| add(word) }
+    list.empty? ? false : true
+  rescue Errno::ENOENT
+    false
   rescue IOError
     false
   end
