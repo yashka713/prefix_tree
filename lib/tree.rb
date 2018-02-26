@@ -27,15 +27,14 @@ class Tree
   def save_to_file(filename = 'words.txt')
     return false if list.empty?
 
-    File.open(file_path(filename), 'w') { |f| list.each { |word| f.puts(word) } }
-    true
+    File.open(file_path(filename), 'w') { |f| list.each { |word| f.puts(word) } }.any?
   rescue IOError
     false
   end
 
   def load_from_file(filename = 'words.txt')
     File.open(file_path(filename), 'r').each_line { |word| add(word) }
-    list.empty? ? false : true
+    list.any?
   rescue Errno::ENOENT
     false
   rescue IOError
