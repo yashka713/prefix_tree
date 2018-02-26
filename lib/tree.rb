@@ -25,16 +25,15 @@ class Tree
   end
 
   def save_to_file(filename = 'words.txt')
-    return false if list.empty?
-
-    File.open(file_path(filename), 'w') { |f| list.each { |word| f.puts(word) } }.any?
+    File.open(file_path(filename), 'w') { |f| list.each { |word| f.puts(word) } }
+    check_file_size(filename)
   rescue IOError
     false
   end
 
   def load_from_file(filename = 'words.txt')
     File.open(file_path(filename), 'r').each_line { |word| add(word) }
-    list.any?
+    check_file_size(filename)
   rescue Errno::ENOENT
     false
   rescue IOError
@@ -43,9 +42,13 @@ class Tree
 
   private
 
+  def check_file_size(filename)
+    File.size(file_path(filename)).to_f.zero? ? '' : true
+  end
+
   def file_path(filename)
     Dir.mkdir('data') unless File.exist?(FILE_PATH)
-    FILE_PATH + filename
+    File.join(FILE_PATH, filename)
   end
 
   def perform_list(node, temp_str, tree)
