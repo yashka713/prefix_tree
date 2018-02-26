@@ -34,10 +34,10 @@ class Tree
 
   private
 
-  def list_v_1(node, str, tree)
-    str += node.char unless node == @node
-    tree << str if node.leaf
-    node.children.each { |child_node| list_v_1(child_node, str, tree) }
+  def list_v_1(node, temp_str, tree)
+    temp_str += node.char unless node == @node
+    tree << temp_str if node.leaf
+    node.children.each { |child_node| list_v_1(child_node, temp_str, tree) }
     tree
   end
 
