@@ -88,6 +88,7 @@ describe 'Tree' do
       assert_equal(filled_tree.list.size, words.size)
       assert_equal(true, filled_tree.save_to_file(file_spec))
       assert_equal(true, File.exist?(Tree::FILE_PATH + file_spec))
+      assert_equal(false, File.size(Tree::FILE_PATH + file_spec).to_f.zero?)
     end
   end
 end
