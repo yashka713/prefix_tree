@@ -18,7 +18,18 @@ class Tree
     word.delete('^a-zA-Z').chars.all? { |letter| branch = find_sprout(branch, letter) } && branch.leaf
   end
 
+  def list
+    perform_list(@node, '', [])
+  end
+
   private
+
+  def perform_list(node, temp_str, tree)
+    temp_str += node.char unless node == @node
+    tree << temp_str if node.leaf
+    node.children.each { |child_node| perform_list(child_node, temp_str, tree) }
+    tree
+  end
 
   def find_or_create_sprout(branch, letter)
     find_sprout(branch, letter) || create_sprout(branch, letter)

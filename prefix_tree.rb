@@ -19,6 +19,7 @@ loop do
     puts tree.includes?(gets.chomp)
   when '3'
     puts 'List of words in tree:'
+    puts tree.list
   when '4'
     puts 'Bye'
     break

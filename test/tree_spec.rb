@@ -2,6 +2,16 @@ require_relative 'spec_helper'
 
 describe 'Tree' do
   let(:tree) { Tree.new }
+  let(:words) { %w[cat cop cup can call chat chart clap cost let letter console content contract] }
+  let(:filled_tree) do
+    tree = Tree.new
+    words.each { |word| tree.add(word) }
+    tree
+  end
+  let(:first_branch) do
+    mother_node = filled_tree.instance_variable_get(:@node).instance_variable_get(:@children).first
+    find_first_word_in_tree(mother_node, '')
+  end
 
   it 'create Tree' do
     tree.must_be_instance_of Tree
@@ -15,7 +25,6 @@ describe 'Tree' do
   end
 
   describe '#add' do
-    let(:tree) { Tree.new }
     let(:first_branch) do
       mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
       find_first_word_in_tree(mother_node, '')
@@ -43,24 +52,27 @@ describe 'Tree' do
   end
 
   describe '#includes?' do
-    let(:tree) do
-      tree = Tree.new
-      words.each { |word| tree.add(word)}
-      tree
-    end
-    let(:words) { %w[cat cop cup can call chat chart clap cost] }
-    let(:first_branch) do
-      mother_node = tree.instance_variable_get(:@node).instance_variable_get(:@children).first
-      find_first_word_in_tree(mother_node, '')
-    end
-
     it 'find word' do
-      words.each { |word| tree.includes?(word).must_equal true }
+      words.each { |word| filled_tree.includes?(word).must_equal true }
       assert_equal('cat', first_branch)
     end
 
     it 'doesn\'t find word' do
-      %w[pop push fat group track].each { |word| tree.includes?(word).must_equal false }
+      %w[pop push fat group track].each { |word| filled_tree.includes?(word).must_equal false }
+    end
+  end
+
+  describe '#list' do
+    it 'when empty' do
+      assert_equal(tree.list.class, Array)
+      assert_equal(tree.list.size, 0)
+    end
+
+    it 'when filled' do
+      assert_equal(tree.list.class, Array)
+      assert_equal(filled_tree.list.size, words.size)
+      filled_tree.list.each { |word| filled_tree.includes?(word).must_equal true }
+      assert_equal('cat', first_branch)
     end
   end
 end
