@@ -78,9 +78,15 @@ describe 'Tree' do
       tree.list.must_match 'Tree is empty'
     end
 
-    it 'when filled' do
+    it 'when filled v_1' do
       assert_equal(fill_tree.list.size, words.size)
       fill_tree.list.each { |word| fill_tree.includes?(word).must_equal true }
+      assert_equal('cat', first_branch)
+    end
+
+    it 'when filled v_2' do
+      assert_equal(fill_tree.list.size, words.size)
+      fill_tree.list_v_2.each { |word| fill_tree.includes?(word).must_equal true }
       assert_equal('cat', first_branch)
     end
   end
