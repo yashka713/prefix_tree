@@ -12,7 +12,7 @@ describe 'Tree' do
     mother_node = filled_tree.instance_variable_get(:@node).instance_variable_get(:@children).first
     find_first_word_in_tree(mother_node, '')
   end
-  let(:file_spec) { File.join('test', 'words_spec.txt')}
+  let(:file_spec) { 'words_spec.txt' }
   let(:file_spec_path) { File.join(TEST_FOLDER_PATH, 'words_spec.txt')}
 
   it 'create Tree' do
