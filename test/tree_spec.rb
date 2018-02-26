@@ -91,4 +91,30 @@ describe 'Tree' do
       assert_equal(false, File.size(Tree::FILE_PATH + file_spec).to_f.zero?)
     end
   end
+
+  describe '#load_from_file' do
+    let(:file_spec) { '/words_spec.txt' }
+    let(:unexisted_file) { '/unexisted_words_spec.txt' }
+    let(:file_empty_spec) do
+      File.new(Tree::FILE_PATH + '/file_empty_spec.txt', 'w')
+      Tree::FILE_PATH + '/file_empty_spec.txt'
+    end
+
+    it 'when file is absent' do
+      assert_equal(false, File.exist?(unexisted_file))
+      assert_equal(false, tree.load_from_file(unexisted_file))
+    end
+
+    it 'when file is empty' do
+      assert_equal(true, File.exist?(file_empty_spec))
+      assert_equal(false, tree.load_from_file(file_empty_spec))
+    end
+
+    it 'when file is exist' do
+      assert_equal(true, File.exist?(Tree::FILE_PATH + file_spec))
+      assert_equal(true, tree.load_from_file(file_spec))
+      tree.list.each { |word| tree.includes?(word).must_equal true }
+      assert_equal('cat', first_branch)
+    end
+  end
 end
