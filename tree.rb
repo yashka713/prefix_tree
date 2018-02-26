@@ -9,37 +9,37 @@ class Tree
     word = word.delete('^a-zA-Z')
     return 'Fill line with word, please' if word.empty?
     branch = @node
-    word.chars.each { |letter| branch = find_or_create_sprout(branch, letter) }
+    word.chars.each {|letter| branch = find_or_create_sprout(branch, letter)}
     branch.leaf = true
   end
 
   def includes?(word)
     branch = @node
-    word.delete('^a-zA-Z').chars.all? { |letter| branch = find_sprout(branch, letter) } && branch.leaf
+    word.delete('^a-zA-Z').chars.all? {|letter| branch = find_sprout(branch, letter)} && branch.leaf
   end
 
   def list
-    @node.children.empty? ? 'Tree is empty' : fill_tree(@node, '', [])
+    @node.children.empty? ? 'Tree is empty' : list_v_1(@node, '', [])
+    # @node.children.empty? ? 'Tree is empty' : list_v_2
+
+  end
+
+  def list_v_2(current_node = @node, temp_str = '', words_arr = [])
+    temp_str = temp_str + current_node.char unless current_node == @node
+    current_node.children.each do |child|
+      words_arr << temp_str + child.char if child.leaf
+      words_arr = list_v_2(child, temp_str, words_arr.clone)
+    end
+    words_arr
   end
 
   private
 
-  def find_branches(node, str, tree)
-    if node.leaf
-      double_l = str + node.char
-      tree << double_l
-      # for word with double letter, for example 'letter'
-      fill_tree(node, double_l, tree)
-    else
-      str << node.char
-      fill_tree(node, str, tree)
-      str.chop!
-    end
-  end
-
-  def fill_tree(node, str, tree)
-    node.children.each { |child_node| find_branches(child_node, str, tree) }
-    tree.reject(&:empty?)
+  def list_v_1(node, str, tree)
+    str = str + node.char unless node == @node
+    tree << str if node.leaf
+    node.children.each {|child_node| list_v_1(child_node, str, tree)}
+    tree
   end
 
   def find_or_create_sprout(branch, letter)
@@ -47,7 +47,7 @@ class Tree
   end
 
   def find_sprout(branch, letter)
-    branch.children.find { |node| node.char == letter }
+    branch.children.find {|node| node.char == letter}
   end
 
   def create_sprout(branch, letter)
