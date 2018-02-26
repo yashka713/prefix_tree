@@ -12,7 +12,8 @@ describe 'Tree' do
     mother_node = filled_tree.instance_variable_get(:@node).instance_variable_get(:@children).first
     find_first_word_in_tree(mother_node, '')
   end
-  let(:file_spec) { '/words_spec.txt' }
+  let(:file_spec) { File.join('test', 'words_spec.txt')}
+  let(:file_spec_path) { File.join(TEST_FOLDER_PATH, 'words_spec.txt')}
 
   it 'create Tree' do
     tree.must_be_instance_of Tree
@@ -78,24 +79,25 @@ describe 'Tree' do
   end
 
   describe '#save_to_file' do
+
     it 'when list is empty' do
       assert_equal(true, tree.list.empty?)
-      assert_equal(false, tree.save_to_file(file_spec))
+      tree.save_to_file(file_spec).must_match ''
     end
 
     it 'when list is filled' do
       assert_equal(filled_tree.list.size, words.size)
       assert_equal(true, filled_tree.save_to_file(file_spec))
-      assert_equal(true, File.exist?(Tree::FILE_PATH + file_spec))
-      assert_equal(false, File.size(Tree::FILE_PATH + file_spec).to_f.zero?)
+      assert_equal(true, File.exist?(file_spec_path))
+      assert_equal(false, File.size(file_spec_path).to_f.zero?)
     end
   end
 
   describe '#load_from_file' do
-    let(:unexisted_file) { '/unexisted_words_spec.txt' }
+    let(:unexisted_file) { File.join(TEST_FOLDER_PATH, '/unexisted_words_spec.txt') }
     let(:file_empty_spec) do
-      File.new(Tree::FILE_PATH + '/file_empty_spec.txt', 'w')
-      Tree::FILE_PATH + '/file_empty_spec.txt'
+      File.new(File.join(TEST_FOLDER_PATH, 'file_empty_spec.txt'), 'w')
+      File.join(TEST_FOLDER_PATH, 'file_empty_spec.txt')
     end
 
     it 'when file is absent' do
@@ -109,7 +111,8 @@ describe 'Tree' do
     end
 
     it 'when file is exist' do
-      assert_equal(true, File.exist?(Tree::FILE_PATH + file_spec))
+      filled_tree.save_to_file(file_spec)
+      assert_equal(true, File.exist?(file_spec_path))
       assert_equal(true, tree.load_from_file(file_spec))
       tree.list.each { |word| tree.includes?(word).must_equal true }
       assert_equal('cat', first_branch)
