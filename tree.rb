@@ -1,6 +1,8 @@
 require_relative 'tree_node.rb'
 
 class Tree
+  FILE_PATH = 'data/'.freeze
+
   def initialize
     @node = TreeNode.new('*')
   end
@@ -19,10 +21,25 @@ class Tree
   end
 
   def list
+    %w[cat cop cup can call chat chart clap cost let letter console content contract].each { |w| add(w) }
     perform_list(@node, '', [])
   end
 
+  def save_to_file(filename = 'words.txt')
+    return false if list.empty?
+
+    File.open(file_path(filename), 'w') { |f| list.each { |word| f.puts(word) } }
+    true
+  rescue IOError
+    false
+  end
+
   private
+
+  def file_path(filename)
+    Dir.mkdir('data') unless File.exist?(FILE_PATH)
+    FILE_PATH + filename
+  end
 
   def perform_list(node, temp_str, tree)
     temp_str += node.char unless node == @node
