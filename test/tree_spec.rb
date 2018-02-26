@@ -75,4 +75,19 @@ describe 'Tree' do
       assert_equal('cat', first_branch)
     end
   end
+
+  describe '#save_to_file' do
+    let(:file_spec) { '/words_spec.txt' }
+
+    it 'when list is empty' do
+      assert_equal(true, tree.list.empty?)
+      assert_equal(false, tree.save_to_file(file_spec))
+    end
+
+    it 'when list is filled' do
+      assert_equal(filled_tree.list.size, words.size)
+      assert_equal(true, filled_tree.save_to_file(file_spec))
+      assert_equal(true, File.exist?(Tree::FILE_PATH + file_spec))
+    end
+  end
 end
