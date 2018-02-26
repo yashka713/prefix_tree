@@ -3,6 +3,15 @@ require_relative 'spec_helper'
 describe 'Tree' do
   let(:tree) { Tree.new }
   let(:words) { %w[cat cop cup can call chat chart clap cost let letter console content contract] }
+  let(:filled_tree) do
+    tree = Tree.new
+    words.each { |word| tree.add(word) }
+    tree
+  end
+  let(:first_branch) do
+    mother_node = filled_tree.instance_variable_get(:@node).instance_variable_get(:@children).first
+    find_first_word_in_tree(mother_node, '')
+  end
 
   it 'create Tree' do
     tree.must_be_instance_of Tree
@@ -43,50 +52,26 @@ describe 'Tree' do
   end
 
   describe '#includes?' do
-    let(:fill_tree) do
-      tree = Tree.new
-      words.each { |word| tree.add(word) }
-      tree
-    end
-    let(:first_branch) do
-      mother_node = fill_tree.instance_variable_get(:@node).instance_variable_get(:@children).first
-      find_first_word_in_tree(mother_node, '')
-    end
-
     it 'find word' do
-      words.each { |word| fill_tree.includes?(word).must_equal true }
+      words.each { |word| filled_tree.includes?(word).must_equal true }
       assert_equal('cat', first_branch)
     end
 
     it 'doesn\'t find word' do
-      %w[pop push fat group track].each { |word| fill_tree.includes?(word).must_equal false }
+      %w[pop push fat group track].each { |word| filled_tree.includes?(word).must_equal false }
     end
   end
 
   describe '#list' do
-    let(:fill_tree) do
-      tree = Tree.new
-      words.each { |word| tree.add(word) }
-      tree
-    end
-    let(:first_branch) do
-      mother_node = fill_tree.instance_variable_get(:@node).instance_variable_get(:@children).first
-      find_first_word_in_tree(mother_node, '')
-    end
-
     it 'when empty' do
-      tree.list.must_match 'Tree is empty'
+      assert_equal(tree.list.class, Array)
+      assert_equal(tree.list.size, 0)
     end
 
-    it 'when filled v_1' do
-      assert_equal(fill_tree.list.size, words.size)
-      fill_tree.list.each { |word| fill_tree.includes?(word).must_equal true }
-      assert_equal('cat', first_branch)
-    end
-
-    it 'when filled v_2' do
-      assert_equal(fill_tree.list.size, words.size)
-      fill_tree.list_v_2.each { |word| fill_tree.includes?(word).must_equal true }
+    it 'when filled' do
+      assert_equal(tree.list.class, Array)
+      assert_equal(filled_tree.list.size, words.size)
+      filled_tree.list.each { |word| filled_tree.includes?(word).must_equal true }
       assert_equal('cat', first_branch)
     end
   end
