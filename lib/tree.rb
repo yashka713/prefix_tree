@@ -47,7 +47,20 @@ class Tree
     puck_file(archive)
   end
 
+  def load_from_zip_file(archive = ARCHIVE_NAME)
+    unpack_and_load(archive)
+  end
+
   private
+
+  def unpack_and_load(archive)
+    temp_file = "temp_#{FILE_NAME}"
+    Zip::File.open(full_path_to_file(archive)) { |file| file.extract(FILE_NAME, full_path_to_file(temp_file)) }
+    load_from_file(temp_file)
+    !delete_file(temp_file).nil?
+  rescue Zip::Error
+    false
+  end
 
   def delete_file(file)
     File.delete(full_path_to_file(file)) if File.exist?(full_path_to_file(file))
