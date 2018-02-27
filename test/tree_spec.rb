@@ -14,6 +14,8 @@ describe 'Tree' do
   end
   let(:file_spec) { 'words_spec.txt' }
   let(:file_spec_path) { File.join(TEST_FOLDER_PATH, 'words_spec.txt') }
+  let(:zip_spec) { 'words_spec.zip' }
+  let(:zip_spec_path) { File.join(TEST_FOLDER_PATH, 'words_spec.zip') }
 
   it 'create Tree' do
     tree.must_be_instance_of Tree
@@ -146,8 +148,7 @@ describe 'Tree' do
     end
 
     it 'when true' do
-      sleep(1)
-      assert_equal(true, File.exist?(zip_spec_path))
+      sleep(2)
       assert_equal(true, tree.load_from_zip_file(zip_spec))
       tree.list.each { |word| tree.includes?(word).must_equal true }
       assert_equal('cat', first_branch)
