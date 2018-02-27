@@ -1,12 +1,15 @@
 require_relative 'lib/tree.rb'
 require 'byebug'
+require 'zip'
 
 menu = [
   'Choose what to do:', '1. Add word.', '2. Check, is this word in the tree?',
-  '3. Show list of words from Tree.', '4. Save to file', '5. Load from file', '6. Exit.'
+  '3. Show list of words from Tree.', '4. Save to file', '5. Load from file',
+  '6. Save to zip file', '7. Load from zip file', '8. Exit.'
 ]
 
 tree = Tree.new
+# rubocop:disable Metrics/BlockLength
 loop do
   print `clear`
   menu.each { |item| puts item }
@@ -25,10 +28,15 @@ loop do
   when '5'
     puts tree.load_from_file
   when '6'
+    puts tree.save_to_zip_file
+  when '7'
+    puts tree.load_from_zip_file
+  when '8'
     puts 'Bye'
     break
   else
     puts 'That\'s not menu item'
   end
-  sleep(5)
+  sleep(2)
 end
+# rubocop:enable Metrics/BlockLength
