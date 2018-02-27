@@ -44,7 +44,7 @@ class Tree
 
   def save_to_zip_file(archive = ARCHIVE_NAME)
     delete_file(archive)
-    puck_file(archive)
+    pack_file(archive)
   end
 
   def load_from_zip_file(archive = ARCHIVE_NAME)
@@ -66,7 +66,7 @@ class Tree
     File.delete(full_path_to_file(file)) if File.exist?(full_path_to_file(file))
   end
 
-  def puck_file(archive)
+  def pack_file(archive)
     temp_file = "temp_#{FILE_NAME}"
     save_to_file(temp_file)
     Zip::File.open(full_path_to_file(archive), Zip::File::CREATE) do |file|
