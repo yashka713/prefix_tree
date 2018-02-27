@@ -1,7 +1,9 @@
 require_relative 'tree_node.rb'
 
 class Tree
-  FILE_PATH = 'data/'.freeze
+  FILE_PATH = 'data'.freeze
+  FILE_NAME = 'words.txt'.freeze
+  ARCHIVE_NAME = 'words.zip'.freeze
 
   def initialize
     @node = TreeNode.new('*')
@@ -24,14 +26,14 @@ class Tree
     perform_list(@node, '', [])
   end
 
-  def save_to_file(filename = 'words.txt')
+  def save_to_file(filename = FILE_NAME)
     File.open(file_path(filename), 'w') { |f| list.each { |word| f.puts(word) } }
     check_file_size(filename)
   rescue IOError
     false
   end
 
-  def load_from_file(filename = 'words.txt')
+  def load_from_file(filename = FILE_NAME)
     File.open(file_path(filename), 'r').each_line { |word| add(word) }
     check_file_size(filename)
   rescue Errno::ENOENT
@@ -40,7 +42,31 @@ class Tree
     false
   end
 
+  def save_to_zip_file(archive = ARCHIVE_NAME)
+    delete_file(archive)
+    puck_file(archive)
+  end
+
   private
+
+  def delete_file(file)
+    File.delete(full_path_to_file(file)) if File.exist?(full_path_to_file(file))
+  end
+
+  def puck_file(archive)
+    temp_file = "temp_#{FILE_NAME}"
+    save_to_file(temp_file)
+    Zip::File.open(full_path_to_file(archive), Zip::File::CREATE) do |file|
+      file.add(temp_file.gsub(/temp_/, ''), full_path_to_file(temp_file))
+    end
+    !delete_file(temp_file).nil?
+  rescue Zip::DestinationFileExistsError
+    false
+  end
+
+  def full_path_to_file(filename)
+    File.join(FILE_PATH, filename)
+  end
 
   def check_file_size(filename)
     File.size(file_path(filename)).to_f.zero? ? '' : true
@@ -48,7 +74,7 @@ class Tree
 
   def file_path(filename)
     Dir.mkdir('data') unless File.exist?(FILE_PATH)
-    File.join(FILE_PATH, filename)
+    full_path_to_file(filename)
   end
 
   def perform_list(node, temp_str, tree)
