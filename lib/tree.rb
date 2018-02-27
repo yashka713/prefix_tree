@@ -44,37 +44,39 @@ class Tree
 
   def save_to_zip_file(archive = ARCHIVE_NAME)
     delete_file(archive)
-    pack_file(archive)
+    perform_archive(archive, 1)
   end
 
   def load_from_zip_file(archive = ARCHIVE_NAME)
-    unpack_and_load(archive)
+    perform_archive(archive, 2)
   end
 
   private
 
-  def unpack_and_load(archive)
-    temp_file = "temp_#{FILE_NAME}"
-    Zip::File.open(full_path_to_file(archive)) { |file| file.extract(FILE_NAME, full_path_to_file(temp_file)) }
-    load_from_file(temp_file)
-    !delete_file(temp_file).nil?
+  def perform_archive(archive, state)
+    tmp_file = "temp_#{FILE_NAME}"
+    state == 1 ? pack_file(archive, tmp_file) : unpack_and_load(archive, tmp_file)
+    !delete_file(tmp_file).nil?
+  end
+
+  def pack_file(archive, tmp_file)
+    save_to_file(tmp_file)
+    Zip::File.open(full_path_to_file(archive), Zip::File::CREATE) do |file|
+      file.add(tmp_file.gsub(/temp_/, ''), full_path_to_file(tmp_file))
+    end
+  rescue Zip::DestinationFileExistsError
+    false
+  end
+
+  def unpack_and_load(archive, tmp_file)
+    Zip::File.open(full_path_to_file(archive)) { |file| file.extract(FILE_NAME, full_path_to_file(tmp_file)) }
+    load_from_file(tmp_file)
   rescue Zip::Error
     false
   end
 
   def delete_file(file)
     File.delete(full_path_to_file(file)) if File.exist?(full_path_to_file(file))
-  end
-
-  def pack_file(archive)
-    temp_file = "temp_#{FILE_NAME}"
-    save_to_file(temp_file)
-    Zip::File.open(full_path_to_file(archive), Zip::File::CREATE) do |file|
-      file.add(temp_file.gsub(/temp_/, ''), full_path_to_file(temp_file))
-    end
-    !delete_file(temp_file).nil?
-  rescue Zip::DestinationFileExistsError
-    false
   end
 
   def full_path_to_file(filename)
