@@ -137,4 +137,20 @@ describe 'Tree' do
       refute_equal(old_file, new_file)
     end
   end
+
+  describe '#load_from_zip_file' do
+    let(:unexisted_zip) { File.join(TEST_FOLDER_PATH, '/unexisted_zip_spec.zip') }
+
+    it 'when false' do
+      assert_equal(false, tree.load_from_zip_file(unexisted_zip))
+    end
+
+    it 'when true' do
+      sleep(1)
+      assert_equal(true, File.exist?(zip_spec_path))
+      assert_equal(true, tree.load_from_zip_file(zip_spec))
+      tree.list.each { |word| tree.includes?(word).must_equal true }
+      assert_equal('cat', first_branch)
+    end
+  end
 end
