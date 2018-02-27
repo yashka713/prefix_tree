@@ -13,7 +13,7 @@ describe 'Tree' do
     find_first_word_in_tree(mother_node, '')
   end
   let(:file_spec) { 'words_spec.txt' }
-  let(:file_spec_path) { File.join(TEST_FOLDER_PATH, 'words_spec.txt')}
+  let(:file_spec_path) { File.join(TEST_FOLDER_PATH, 'words_spec.txt') }
 
   it 'create Tree' do
     tree.must_be_instance_of Tree
@@ -79,7 +79,6 @@ describe 'Tree' do
   end
 
   describe '#save_to_file' do
-
     it 'when list is empty' do
       assert_equal(true, tree.list.empty?)
       tree.save_to_file(file_spec).must_match ''
@@ -116,6 +115,26 @@ describe 'Tree' do
       assert_equal(true, tree.load_from_file(file_spec))
       tree.list.each { |word| tree.includes?(word).must_equal true }
       assert_equal('cat', first_branch)
+    end
+  end
+
+  describe '#save_to_zip_file' do
+    it 'when new archive' do
+      File.delete(zip_spec_path) if File.exist?(zip_spec_path)
+      assert_equal(false, File.exist?(zip_spec_path))
+      assert_equal(filled_tree.list.size, words.size)
+      assert_equal(true, filled_tree.save_to_zip_file(zip_spec))
+      assert_equal(true, File.exist?(zip_spec_path))
+    end
+
+    it 'when archive is present' do
+      sleep(1)
+      old_file = File.stat(zip_spec_path).mtime
+      assert_equal(filled_tree.list.size, words.size)
+      assert_equal(true, filled_tree.save_to_zip_file(zip_spec))
+      assert_equal(true, File.exist?(zip_spec_path))
+      new_file = File.stat(zip_spec_path).mtime
+      refute_equal(old_file, new_file)
     end
   end
 end
